@@ -1,4 +1,4 @@
-import React , {useEffect} from 'react';
+import React , { useEffect } from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,7 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useDispatch, useSelector} from "react-redux";
-// import { loadUsers } from '../redux/action';
+import { loadUsers } from '../redux/action';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -35,11 +35,11 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 function Home() {
 
     let dispatch = useDispatch();
-   
+    const { users } = useSelector(state => state.data)
 
-    // useEffect(() => {
-    //     dispatch(loadUsers());
-    // }, []);
+    useEffect(() => {
+      dispatch(loadUsers());
+    }, []);
 
     return (
       <div>
@@ -47,26 +47,26 @@ function Home() {
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                <StyledTableCell align="right">Calories</StyledTableCell>
-                <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-                <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-                <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+                <StyledTableCell>Name</StyledTableCell>
+                <StyledTableCell align="center">Email</StyledTableCell>
+                <StyledTableCell align="center">Contact</StyledTableCell>
+                <StyledTableCell align="center">Address</StyledTableCell>
+                <StyledTableCell align="center">Action</StyledTableCell>
               </TableRow>
             </TableHead>
-            {/* <TableBody>
-              {rows.map((row) => (
-                <StyledTableRow key={row.name}>
+            <TableBody>
+              {users && users.map((user) => (
+                <StyledTableRow key={user.id}>
                   <StyledTableCell component="th" scope="row">
-                    {row.name}
+                    {user.name}
                   </StyledTableCell>
-                  <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                  <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                  <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                  <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                  <StyledTableCell align="center">{user.email}</StyledTableCell>
+                  <StyledTableCell align="center">{user.contact}</StyledTableCell>
+                  <StyledTableCell align="center">{user.address}</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
                 </StyledTableRow>
               ))}
-            </TableBody> */}
+            </TableBody>
           </Table>
         </TableContainer>
       </div>

@@ -6,12 +6,12 @@ const getUsers = (users) => ({
     payload: users,
 });
 
-// export const loadUsers = () => {
-//     return function (dispatch) {
-//         axios.get(`${process.env.REACT_APP_API}`).then((resp) => {
-//             console.log("resp", resp);
-//             dispatch(getUsers(resp.data));
-//         })
-//         .catch((error) => console.log(error));
-//     };
-// };
+export const loadUsers = () => {
+    return function (dispatch) {
+        axios.get(`${process.env.REACT_APP_API}`).then((resp) => {
+            console.log("resp", resp);
+            dispatch(getUsers(resp.data));
+        })
+        .catch((error) => console.log(error));
+    };
+};
