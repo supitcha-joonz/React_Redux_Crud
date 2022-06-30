@@ -8,7 +8,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {useDispatch, useSelector} from "react-redux";
-import { loadUsers } from '../redux/action';
+import { deleteUser, loadUsers } from '../redux/action';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -30,10 +34,11 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     },
   }));
 
-
   
+
 function Home() {
 
+    let navigate = useNavigate();
     let dispatch = useDispatch();
     const { users } = useSelector(state => state.data)
 
@@ -41,13 +46,24 @@ function Home() {
       dispatch(loadUsers());
     }, []);
 
+    const handleDelete = (id) => {
+      if(window.confirm("Are you sure wanted to delete the user ?")) {
+        dispatch(deleteUser(id));
+      }
+    }
+
     return (
       <div>
+        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center'}}>
+        <Link to="/addUser" style={{ textDecoration: 'none'}}>
+        <Button variant='contained' color = "primary">Add User</Button>
+        </Link>
+        </div>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <StyledTableCell>Name</StyledTableCell>
+                <StyledTableCell align="center">Name</StyledTableCell>
                 <StyledTableCell align="center">Email</StyledTableCell>
                 <StyledTableCell align="center">Contact</StyledTableCell>
                 <StyledTableCell align="center">Address</StyledTableCell>
@@ -57,13 +73,23 @@ function Home() {
             <TableBody>
               {users && users.map((user) => (
                 <StyledTableRow key={user.id}>
-                  <StyledTableCell component="th" scope="row">
+                  <StyledTableCell component="th" scope="row" align="center">
                     {user.name}
                   </StyledTableCell>
                   <StyledTableCell align="center">{user.email}</StyledTableCell>
                   <StyledTableCell align="center">{user.contact}</StyledTableCell>
                   <StyledTableCell align="center">{user.address}</StyledTableCell>
-                  <StyledTableCell align="center"></StyledTableCell>
+                  <StyledTableCell align="center">
+
+                    <ButtonGroup variant="contained" aria-label="contained primary button group">
+                      <Button 
+                      color = "error" 
+                      style={{ marginRight: "5px" }}
+                      onClick={() => handleDelete(user.id)}>
+                        DEL</Button>
+                      <Button color = "primary" >EDIT</Button>
+                  </ButtonGroup>
+                  </StyledTableCell>
                 </StyledTableRow>
               ))}
             </TableBody>
