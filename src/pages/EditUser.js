@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
-import {useDispatch} from "react-redux";
-import { addUser } from '../redux/action';
+import { Link , useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import {  getSingleUser, updateUser } from '../redux/action';
 import { useNavigate } from 'react-router-dom';
 
-const AddUser = () => {
+const EditUser = () => {
 
 let dispatch = useDispatch();
 const navigate = useNavigate();
+const { user } = useSelector(state => state.data);
+let {id} = useParams();
 
 const [state, setState] = useState({
     name: "",
@@ -20,6 +22,16 @@ const [state, setState] = useState({
 });
 
 const { name, email, contact, address } = state;
+
+useEffect(() => {
+  dispatch(getSingleUser(id));
+}, []);
+
+useEffect(() => {
+  if(user) {
+    setState({ ...user });
+  }
+}, [user]);
 
 const [error, setError] = useState("");
 
@@ -33,7 +45,7 @@ const handelSubmit = (e) => {
   if(!name || !address || !email || !contact ) {
     setError("Please input all input Field");
   } else {
-    dispatch(addUser(state));
+    dispatch(updateUser(state, id));
     navigate("/");
     setError("");
   }
@@ -53,38 +65,36 @@ const handelSubmit = (e) => {
         onSubmit={handelSubmit}
         >
            
-
-
         <div>
-            <h2>ADD USER</h2>
+            <h2>Edit USER</h2>
             {error && <h3 style={{color: "red"}}>{error}</h3>}
         </div>
         
         <TextField id="standard-basic" variant="standard" 
           label="Name"  
           name="name"
-          value={name}  
+          value={name || ""}  
           type="text" 
           onChange={handleInputChange} /><br />
 
         <TextField id="standard-basic" variant="standard" 
           label="email" 
           name='email'
-          value={email}
+          value={email || ""}
           type="email" 
           onChange={handleInputChange}/><br />
 
         <TextField id="standard-basic" variant="standard" 
           label="contact" 
           name='contact'
-          value={contact} 
+          value={contact || ""} 
           type="number" 
           onChange={handleInputChange}/><br />
 
         <TextField id="standard-basic" variant="standard" 
          label="address"
          name='address'
-         value={address} 
+         value={address || ""} 
          type="text" 
          onChange={handleInputChange} /><br />
 
@@ -99,7 +109,7 @@ const handelSubmit = (e) => {
             <Button style={{width: "100px"}} variant='contained' 
              color = "primary"
              type='submit' 
-             onChange={handleInputChange}>Submit</Button>
+             onChange={handleInputChange}>Update</Button>
             </div>
         </div>
       </Box>
@@ -107,4 +117,4 @@ const handelSubmit = (e) => {
   )
 }
 
-export default AddUser
+export default EditUser

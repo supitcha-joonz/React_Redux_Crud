@@ -87,7 +87,7 @@ function Home() {
                       style={{ marginRight: "5px" }}
                       onClick={() => handleDelete(user.id)}>
                         DEL</Button>
-                      <Button color = "primary" >EDIT</Button>
+                      <Button color = "primary" onClick={() => navigate(`/editUser/${user.id}`)} >EDIT</Button>
                   </ButtonGroup>
                   </StyledTableCell>
                 </StyledTableRow>
